@@ -1,2 +1,1 @@
-# LeetCode
-Collection of LeetCode questions to ace the coding interview! - Created using [LeetHub](https://github.com/QasimWani/LeetHub)
+Time: 76 ms (Beats 42.97%), Space: 17.7 MB (Beats 17.95%)
