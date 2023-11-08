@@ -1,6 +1,8 @@
-# 1-two-sum
+# [1. Two Sum](https://leetcode.com/problems/two-sum)
 
-## Question
+**Difficulty:** Easy
+
+---
 
 <p>Given an array of integers <code>nums</code>&nbsp;and an integer <code>target</code>, return <em>indices of the two numbers such that they add up to <code>target</code></em>.</p>
 
