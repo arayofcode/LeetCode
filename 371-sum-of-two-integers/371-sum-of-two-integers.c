@@ -11,9 +11,9 @@ int getSum(int a, int b){
         3. Do addition with result of 2 and 1 until result of 1 is 0
     */
     while(b){
-        int carry = (unsigned) (a & b) << 1;
+        unsigned int carry = (a & b);
         a = a ^ b;
-        b = carry;
+        b = carry << 1;
     }
     return a;
 }
