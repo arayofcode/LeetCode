@@ -6,13 +6,6 @@ func gcdOfStrings(str1 string, str2 string) string {
 }
 
 func gcd(a int, b int) int {
-    for b != 0 {
-        a, b = b, a % b
-    }
-    return a
-}
-
-func gcdRecursive(a int, b int) int {
     if b == 0 {
         return a
     } else {
