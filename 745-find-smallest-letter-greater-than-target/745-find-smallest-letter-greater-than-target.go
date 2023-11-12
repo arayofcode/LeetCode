@@ -1,13 +1,4 @@
 func nextGreatestLetter(letters []byte, target byte) byte {
-    for _, letter := range letters {
-        if letter > target {
-            return letter
-        }
-    }
-    return letters[0]
-}
-
-func nextGreatestLetterBinarySearchImplementation(letters []byte, target byte) byte {
     low, high := 0, len(letters) - 1
     mid := low + (high - low) / 2
     for low <= high {
