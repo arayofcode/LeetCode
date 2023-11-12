@@ -25,5 +25,3 @@ class Solution:
             return merged_array[(length + 1) // 2 - 1]
         else:
             return (merged_array[length // 2 - 1] + merged_array[length // 2]) / 2
-        
-        # Since array is sorted, it seems to have something to do with binary search
