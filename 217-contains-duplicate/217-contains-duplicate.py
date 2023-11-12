@@ -1,9 +1,9 @@
 class Solution:
     def containsDuplicate(self, nums: List[int]) -> bool:
-        memo = {}
+        dups = {}
         for i in nums:
-            if i in memo:
+            if i in dups:
                 return True
-            else: 
-                memo[i] = 0
+            else:
+                dups[i] = 0
         return False
