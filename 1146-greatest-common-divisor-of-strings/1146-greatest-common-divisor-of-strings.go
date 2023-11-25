@@ -1,19 +1,4 @@
 func gcdOfStrings(str1 string, str2 string) string {
-    if str1 + str2 != str2 + str1 {
-        return ""
-    }
-    return str1[:gcd(len(str1), len(str2))]
-}
-
-func gcd(a int, b int) int {
-    if b == 0 {
-        return a
-    } else {
-        return gcd(b, a % b)
-    }
-}
-
-func gcdOfStrings_factorsApproach(str1 string, str2 string) string {
     // Find factors of the smaller string
     // Check if they are factors of larger string
     // Return the largest such factor
