@@ -1,13 +1,11 @@
 func increasingTriplet(nums []int) bool {
     minimum := math.MaxInt
     secondMinimum := math.MaxInt
-    n := len(nums)
-    for i := 0; i < n; i++ {
-        num := nums[i]
-        if num <= minimum {
-            minimum = num
-        } else if num <= secondMinimum {
-            secondMinimum = num
+    for i := 0; i < len(nums); i++ {
+        if nums[i] <= minimum {
+            minimum = nums[i]
+        } else if nums[i] <= secondMinimum {
+            secondMinimum = nums[i]
         } else {
             return true
         }
