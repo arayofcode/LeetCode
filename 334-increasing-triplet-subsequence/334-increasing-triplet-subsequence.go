@@ -1,6 +1,6 @@
 func increasingTriplet(nums []int) bool {
     minimum := math.MaxInt
-    secondMinimum := minimum
+    secondMinimum := math.MaxInt
     n := len(nums)
     for i := 0; i < n; i++ {
         num := nums[i]
