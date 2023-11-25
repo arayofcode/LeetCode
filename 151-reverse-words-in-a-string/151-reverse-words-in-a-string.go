@@ -1,10 +1,9 @@
 func reverseWords(s string) (result string) {
-    var words []string
     word := ""
     for i := 0; i < len(s); i++ {
         if s[i] == ' ' {
             if len(word) > 0 {
-                words = append(words, strings.TrimSpace(word))
+                result = word + " " + result
             }
             word = ""
         } else {
@@ -12,11 +11,8 @@ func reverseWords(s string) (result string) {
         }
     }
     if len(word) > 0 {
-        words = append(words, word)
+        result = word + " " + result
     }
-    result = words[len(words) - 1]
-    for i := len(words) - 2; i >= 0; i-- {
-        result += " " + words[i]
-    }
+    result = result[:len(result) - 1]
     return
 }
