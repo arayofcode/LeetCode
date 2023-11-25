@@ -1,7 +1,9 @@
 func gcdOfStrings(str1 string, str2 string) string {
+    // Two strings with same factor essentially sum up to same merged string
     if str1 + str2 != str2 + str1 {
         return ""
     }
+    // GCD of their length is the solution
     return str1[:gcd(len(str1), len(str2))]
 }
 
