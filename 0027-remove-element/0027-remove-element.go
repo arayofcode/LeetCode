@@ -1,11 +1,11 @@
 func removeElement(nums []int, val int) int {
-    return twoPointers(nums, val)
+    return twoPointersApproachTwo(nums, val)
 }
 
 // Approach 1 - Two Pointers
 // One pointer to iterate, the other to swap
 // Start from 0. If non-val, swap, and increase count
-// Time: O(n) Space: O(1)
+// Time: O(n), Space: O(1)
 func twoPointers(nums []int, val int) int {
     k := 0
     for _, num := range nums {
@@ -15,6 +15,23 @@ func twoPointers(nums []int, val int) int {
         }
     }
     return k
+}
+
+// Approach 4 - Two Pointers Reversed
+// Slightly modified from Approach 1
+// Track all elements not swapped
+// Time: O(n), Space: O(1)
+func twoPointersApproachTwo(nums []int, val int) int {
+    i, n := 0, len(nums)
+    for i < n {
+        if nums[i] == val {
+            n--
+            nums[i] = nums[n]
+        } else {
+            i++
+        }
+    }
+    return n
 }
 
 // Approach 2 - Hash Table:
@@ -40,10 +57,10 @@ func hashTable(nums []int, val int) (count int) {
 }
 
 // Approach 3 - Slice off any val found
-// Technically incorrect as I created new array
+// Technically incorrect because I created another array
 // Create new slice, append non-val elements
 // Copy this slice back to nums
-// Time: O(n) Space: O(n)
+// Time: O(n), Space: O(n)
 func slicing(nums []int, val int) int {
     var result []int
     for _, num := range nums {
