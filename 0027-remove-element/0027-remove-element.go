@@ -1,5 +1,5 @@
 func removeElement(nums []int, val int) int {
-    return twoPointersApproachTwo(nums, val)
+    return twoPointers(nums, val)
 }
 
 // Approach 1 - Two Pointers
