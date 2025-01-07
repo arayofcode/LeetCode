@@ -40,6 +40,7 @@ func hashTable(nums []int, val int) (count int) {
 }
 
 // Approach 3 - Slice off any val found
+// Technically incorrect as I created new array
 // Create new slice, append non-val elements
 // Copy this slice back to nums
 // Time: O(n) Space: O(n)
