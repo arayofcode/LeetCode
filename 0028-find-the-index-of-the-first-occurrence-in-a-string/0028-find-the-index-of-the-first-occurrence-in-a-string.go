@@ -1,3 +1,6 @@
+// Simplest approach: Sliding window
+// Start from i, check haystack[i:i+len(needle)] == needle
+// Return needle
 func strStr(haystack string, needle string) int {
     needleLen := len(needle)
     haystackLen := len(haystack)
