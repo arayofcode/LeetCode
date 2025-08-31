@@ -1,14 +1,7 @@
-type (
-	card      int
-	station   string
-	timestamp int
-    routeKey  string
-)
-
 type ongoingJourney struct {
-	id           card
-	startStation station
-	startTime    timestamp
+	id           int
+	startStation string
+	startTime    int
 }
 
 type routeDetails struct {
@@ -17,43 +10,35 @@ type routeDetails struct {
 }
 
 type UndergroundSystem struct {
-	ongoingJourneys map[card]ongoingJourney
-    routeStats map[routeKey]routeDetails
+	ongoingJourneys map[int]ongoingJourney
+    routeStats map[string]routeDetails
 }
 
 func Constructor() UndergroundSystem {
     return UndergroundSystem{
-	    ongoingJourneys: make(map[card]ongoingJourney),
-        routeStats: make(map[routeKey]routeDetails),
+	    ongoingJourneys: make(map[int]ongoingJourney),
+        routeStats: make(map[string]routeDetails),
     }
 }
 
-func getRouteKey(startStation station, endStation station) routeKey {
-    return routeKey(fmt.Sprintf("%s---%s", startStation, endStation))
+func getRouteKey(startStation string, endStation string) string {
+    return fmt.Sprintf("%s---%s", startStation, endStation)
 }
 
 func (this *UndergroundSystem) CheckIn(id int, stationName string, t int) {
-    cardId := card(id)
-    startStation := station(stationName)
-    startTime := timestamp(t)
-
-    this.ongoingJourneys[cardId] = ongoingJourney{
-        id: cardId,
-        startStation: startStation,
-        startTime: startTime,
+    this.ongoingJourneys[id] = ongoingJourney{
+        id: id,
+        startStation: stationName,
+        startTime: t,
     }
 }
 
 func (this *UndergroundSystem) CheckOut(id int, stationName string, t int) {
-    cardId := card(id)
-    endStation := station(stationName)
-    endTime := timestamp(t)
+    journey := this.ongoingJourneys[id]
+    delete(this.ongoingJourneys, id)
 
-    journey := this.ongoingJourneys[cardId]
-    delete(this.ongoingJourneys, cardId)
-
-    duration := float64(endTime - journey.startTime)
-    key := getRouteKey(journey.startStation, endStation)
+    duration := float64(t - journey.startTime)
+    key := getRouteKey(journey.startStation, stationName)
     if route, found := this.routeStats[key]; !found {
         this.routeStats[key] = routeDetails{
             journeyCount: 1,
@@ -70,6 +55,6 @@ func (this *UndergroundSystem) CheckOut(id int, stationName string, t int) {
 }
 
 func (this *UndergroundSystem) GetAverageTime(startStation string, endStation string) float64 {
-    key := getRouteKey(station(startStation), station(endStation))
+    key := getRouteKey(startStation, endStation)
     return this.routeStats[key].averageTime
 }
