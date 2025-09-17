@@ -75,14 +75,15 @@ func (this *FoodRatings) updateMaxCuisine(givenFood *food, oldRating int) {
     // What happens when givenFood was already the one with highest rating?
     // recalculate maximum
     if givenFood.name == this.cuisineMap[cuisine].name {
-        for _, food := range this.cuisineFoods[cuisine] {
-            currMax := this.cuisineMap[cuisine]
+        currMax := this.cuisineFoods[cuisine][0]
+        for _, food := range this.cuisineFoods[cuisine][1:] {
             if food.rating > currMax.rating {
-                this.cuisineMap[cuisine] = food
+                currMax = food
             } else if food.rating == currMax.rating && food.name < currMax.name {
-                this.cuisineMap[cuisine] = food
+                currMax = food
             }
         }
+        this.cuisineMap[cuisine] = currMax
         return
     }
 
