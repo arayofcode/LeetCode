@@ -35,13 +35,11 @@ func (h *TaskHeap) Pop() interface{} {
 }
 
 type TaskManager struct {
-    task2user map[int]int
     taskMap map[int]*Task
     maxHeap *TaskHeap
 }
 
 func Constructor(tasks [][]int) TaskManager {
-    task2user :=  make(map[int]int)
     taskMap :=  make(map[int]*Task)
     maxHeap := make(TaskHeap, 0)
 
@@ -56,12 +54,10 @@ func Constructor(tasks [][]int) TaskManager {
             priority: priority,
             deleted: false,
         }
-        task2user[taskId] = userId
         taskMap[taskId] = newTask
         heap.Push(&maxHeap, newTask)
     }
     return TaskManager{
-        task2user: task2user,
         taskMap: taskMap,
         maxHeap: &maxHeap,
     }
@@ -74,7 +70,6 @@ func (this *TaskManager) Add(userId int, taskId int, priority int) {
         priority: priority,
         deleted: false,
     }
-    this.task2user[taskId] = userId
     this.taskMap[taskId] = task
 
     heap.Push(this.maxHeap, task)
@@ -101,7 +96,6 @@ func (this *TaskManager) Rmv(taskId int) {
         this.taskMap[taskId].deleted = true
     }
 
-    delete(this.task2user, taskId)
     delete(this.taskMap, taskId)
 }
 
@@ -111,7 +105,6 @@ func (this *TaskManager) ExecTop() int {
         if !topTask.deleted {
             userId := topTask.user
             taskId := topTask.task
-            delete(this.task2user, taskId)
             delete(this.taskMap, taskId)
             return userId
         }
