@@ -4,16 +4,18 @@ type Spreadsheet struct {
 
 func Constructor(rows int) Spreadsheet {
 	return Spreadsheet{
-		sheet: make(map[string]int),
+		sheet: make(map[string]int, rows*26),
 	}
 }
 
 func (this *Spreadsheet) SetCell(cell string, value int) {
-    this.sheet[cell] = value
+    if value != 0 {
+        this.sheet[cell] = value
+    }
 }
 
 func (this *Spreadsheet) ResetCell(cell string) {
-	this.sheet[cell] = 0
+	delete(this.sheet, cell)
 }
 
 func (this *Spreadsheet) GetValue(formula string) int {
