@@ -1,27 +1,22 @@
 type Spreadsheet struct {
-	sheet   []int
-	rows    int
-	columns int
+	sheet   map[string]int
 }
 
 func Constructor(rows int) Spreadsheet {
 	return Spreadsheet{
-		sheet:   make([]int, rows*26),
-		rows:    rows,
-		columns: 26,
+		sheet: make(map[string]int),
 	}
 }
 
 func (this *Spreadsheet) SetCell(cell string, value int) {
-    this.sheet[this.flatIndex(cell)] = value
+    this.sheet[cell] = value
 }
 
 func (this *Spreadsheet) ResetCell(cell string) {
-	this.sheet[this.flatIndex(cell)] = 0
+	this.sheet[cell] = 0
 }
 
 func (this *Spreadsheet) GetValue(formula string) int {
-	
     for i := 1; i < len(formula); i++ {
 		if formula[i] == '+' {
 			return this.processRef(formula[1:i]) + this.processRef(formula[i+1:])
@@ -30,17 +25,11 @@ func (this *Spreadsheet) GetValue(formula string) int {
     return 0
 }
 
-func (this *Spreadsheet) flatIndex(cell string) int {
-	row := parseToInt(cell[1:]) - 1
-	col := int(cell[0] - 'A')
-    return row*this.columns + col
-}
-
 func (this *Spreadsheet) processRef(ref string) int {
     if ref[0] >= '0' && ref[0] <= '9' {
 		return parseToInt(ref)
 	}
-	return this.sheet[this.flatIndex(ref)]
+	return this.sheet[ref]
 }
 
 func parseToInt(ref string) int {
