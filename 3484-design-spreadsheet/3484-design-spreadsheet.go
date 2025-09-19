@@ -1,58 +1,52 @@
 type Spreadsheet struct {
-    sheet [][]int
+	sheet   []int
+	rows    int
+	columns int
 }
-
 
 func Constructor(rows int) Spreadsheet {
-    cells := make([]int, rows*26)
-    sheet := make([][]int, rows)
-    for i := range sheet {
-        sheet[i] = cells[i * 26: (i+1) * 26]
-    }
-
-    return Spreadsheet{
-        sheet: sheet,
-    }
+	return Spreadsheet{
+		sheet:   make([]int, rows*26),
+		rows:    rows,
+		columns: 26,
+	}
 }
 
-
-func (this *Spreadsheet) SetCell(cell string, value int)  {
-    row, column := this.indexes(cell)
-    this.sheet[row][column] = value
+func (this *Spreadsheet) SetCell(cell string, value int) {
+    this.sheet[this.flatIndex(cell)] = value
 }
 
-
-func (this *Spreadsheet) ResetCell(cell string)  {
-    row, column := this.indexes(cell)
-    this.sheet[row][column] = 0
+func (this *Spreadsheet) ResetCell(cell string) {
+	this.sheet[this.flatIndex(cell)] = 0
 }
-
 
 func (this *Spreadsheet) GetValue(formula string) int {
-    // formula always starts with an =
-    refs := strings.Split(formula[1:], "+")
-    return this.computeResults(refs)
+	
+    for i := 1; i < len(formula); i++ {
+		if formula[i] == '+' {
+			return this.processRef(formula[1:i]) + this.processRef(formula[i+1:])
+		}
+	}
+    return 0
 }
 
-func (this *Spreadsheet) indexes(cell string) (int, int) {
-    row, _ := strconv.Atoi(cell[1:])
-    return row - 1, int(cell[0] - 'A')
+func (this *Spreadsheet) flatIndex(cell string) int {
+	row := parseToInt(cell[1:]) - 1
+	col := int(cell[0] - 'A')
+    return row*this.columns + col
 }
 
-func (this *Spreadsheet) computeResults(refs []string) int {
-    results := 0
-    for _, ref := range refs {
-        val := this.refVal(ref)
-        results += val
-    }
-    return results
+func (this *Spreadsheet) processRef(ref string) int {
+    if ref[0] >= '0' && ref[0] <= '9' {
+		return parseToInt(ref)
+	}
+	return this.sheet[this.flatIndex(ref)]
 }
 
-func (this *Spreadsheet) refVal(ref string) int {
-    if ref[0] < 'A' {
-        val, _ := strconv.Atoi(ref)
-        return val
-    }
-    row, column := this.indexes(ref)
-    return this.sheet[row][column]
+func parseToInt(ref string) int {
+	results := 0
+	for i := range ref {
+		results = results * 10 + int(ref[i]-'0')
+	}
+	return results
 }
