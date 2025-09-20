@@ -6,14 +6,14 @@ type packet struct {
 
 type Router struct {
 	packets       chan *packet
-	queuedPackets map[string]struct{}
+	queuedPackets map[packet]struct{}
     packetsByDest map[int][]int
 }
 
 func Constructor(memoryLimit int) Router {
 	return Router{
 		packets:       make(chan *packet, memoryLimit),
-		queuedPackets: make(map[string]struct{}, memoryLimit),
+		queuedPackets: make(map[packet]struct{}, memoryLimit),
 		packetsByDest: make(map[int][]int, memoryLimit),
 	}
 }
@@ -25,7 +25,7 @@ func (this *Router) AddPacket(source int, destination int, timestamp int) bool {
 		timestamp:   timestamp,
 	}
 
-	key := getKey(pkt)
+	key := *pkt
     if _, found := this.queuedPackets[key]; found {
 		return false
 	}
@@ -55,13 +55,9 @@ func (this *Router) GetCount(destination int, startTime int, endTime int) int {
     return right - left
 }
 
-func getKey(pkt *packet) string {
-    return fmt.Sprintf("%d-%d-%d", pkt.source, pkt.destination, pkt.timestamp)
-}
-
 func (this *Router) removeHead() *packet {
     node := <-this.packets
-    key := getKey(node)
+    key := *node
     delete(this.queuedPackets, key)
     nodes := this.packetsByDest[node.destination]
     i := sort.SearchInts(nodes, node.timestamp)
