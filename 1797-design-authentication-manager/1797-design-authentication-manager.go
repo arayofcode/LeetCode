@@ -41,10 +41,7 @@ func (this *AuthenticationManager) Generate(tokenId string, currentTime int)  {
 
 func (this *AuthenticationManager) Renew(tokenId string, currentTime int)  {
     if expiry, found := this.tokens[tokenId]; found && expiry > currentTime {
-        // Remove its count from existing expiry, and add it to new expiry
-        if this.count[expiry].count > 0 {
-            this.count[expiry].count--
-        }
+        this.count[expiry].count--
         newExpiry := currentTime + this.ttl
         this.tokens[tokenId] = newExpiry
         if _, found := this.count[newExpiry]; !found {
@@ -60,6 +57,8 @@ func (this *AuthenticationManager) Renew(tokenId string, currentTime int)  {
 }
 
 func (this *AuthenticationManager) CountUnexpiredTokens(currentTime int) int {
+    this.countCleanup()
+
     idx, _ := slices.BinarySearch(this.expiries, currentTime + 1)
 
     count := 0
@@ -67,4 +66,16 @@ func (this *AuthenticationManager) CountUnexpiredTokens(currentTime int) int {
         count += this.count[expiry].count
     }
     return count
+}
+
+func (this *AuthenticationManager) countCleanup() {
+    for i := 0; i < len(this.expiries); i++ {
+        expiry := this.expiries[i]
+        if this.count[expiry].count < 1 {
+            this.expiries = append(this.expiries[:i], this.expiries[i+1:]...)
+            for j := i; j < len(this.expiries); j++ {
+                this.count[this.expiries[j]].index = j
+            }
+        }
+    }
 }
