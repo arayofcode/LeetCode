@@ -69,13 +69,15 @@ func (this *AuthenticationManager) CountUnexpiredTokens(currentTime int) int {
 }
 
 func (this *AuthenticationManager) countCleanup() {
-    for i := 0; i < len(this.expiries); i++ {
+    for i := 0; i < len(this.expiries); {
         expiry := this.expiries[i]
         if this.count[expiry].count < 1 {
             this.expiries = append(this.expiries[:i], this.expiries[i+1:]...)
             for j := i; j < len(this.expiries); j++ {
                 this.count[this.expiries[j]].index = j
             }
+        } else {
+            i++
         }
     }
 }
