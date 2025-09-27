@@ -72,6 +72,7 @@ func (this *AuthenticationManager) countCleanup() {
     for i := 0; i < len(this.expiries); {
         expiry := this.expiries[i]
         if this.count[expiry].count < 1 {
+            delete(this.count, expiry)
             this.expiries = append(this.expiries[:i], this.expiries[i+1:]...)
             for j := i; j < len(this.expiries); j++ {
                 this.count[this.expiries[j]].index = j
