@@ -1,8 +1,6 @@
 type Node struct {
     index   int
     url     string
-    prev    *Node
-    next    *Node
 }
 
 type BrowserHistory struct {
@@ -16,8 +14,6 @@ func Constructor(homepage string) BrowserHistory {
     node := &Node{
         index:   0,
         url:     homepage,
-        prev:    nil,
-        next:    nil,
     }
 
     head := node
@@ -36,11 +32,8 @@ func (this *BrowserHistory) Visit(url string)  {
     node := &Node{
         index: this.curr.index + 1,
         url:   url,
-        prev:  this.curr,
-        next:  nil,
     }
     this.visited = append(this.visited[:this.curr.index + 1], node)
-    this.curr.next = node
     this.curr = node
 }
 
