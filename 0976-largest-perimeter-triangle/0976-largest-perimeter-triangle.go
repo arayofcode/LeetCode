@@ -11,6 +11,7 @@ func sortedNums(nums []int) int {
             if nums[i] + nums[j] > nums[k] {
                 if nums[i] + nums[j] + nums[k] > max {
                     max = nums[i] + nums[j] + nums[k]
+                    return max
                 }
                 j++
             } else {
