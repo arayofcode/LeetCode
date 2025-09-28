@@ -1,5 +1,24 @@
 func largestPerimeter(nums []int) int {
-    return bruteForce(nums)
+    return sortedNums(nums)
+}
+
+func sortedNums(nums []int) int {
+    max := 0
+    slices.Sort(nums)
+    for i := len(nums)-3; i >= 0; i-- {
+        j, k := i+1, len(nums) - 1
+        for j < k {
+            if nums[i] + nums[j] > nums[k] {
+                if nums[i] + nums[j] + nums[k] > max {
+                    max = nums[i] + nums[j] + nums[k]
+                }
+                j++
+            } else {
+                k--
+            }
+        }
+    }
+    return max
 }
 
 func bruteForce(nums []int) int {
