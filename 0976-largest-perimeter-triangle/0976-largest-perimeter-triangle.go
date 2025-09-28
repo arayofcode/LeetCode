@@ -4,14 +4,9 @@ func largestPerimeter(nums []int) int {
 
 func sortedNums(nums []int) int {
     slices.Sort(nums)
-    for i := len(nums)-3; i >= 0; i-- {
-        j, k := i+1, len(nums) - 1
-        for j < k {
-            if nums[i] + nums[j] > nums[k] {
-                return nums[i] + nums[j] + nums[k]
-            } else {
-                k--
-            }
+    for i := len(nums)-1; i >= 2; i-- {
+        if nums[i -1] + nums[i - 2] > nums[i] {
+            return nums[i] + nums[i-1] + nums[i-2]
         }
     }
     return 0
