@@ -40,8 +40,5 @@ func (this *Bank) Withdraw(account int, money int64) bool {
 }
 
 func (this *Bank) validAccount(account int) bool {
-    if account >= 1 && account <= this.total {
-        return true
-    }
-    return false
+    return account >= 1 && account <= this.total
 }
