@@ -1,118 +1,88 @@
 type node struct {
     val int
-    prev *node
     next *node
 }
 
 type MyLinkedList struct {
-    head  *node
-    tail  *node
-    nodes []*node
+    head *node
+    size int
 }
 
 
 func Constructor() MyLinkedList {
     return MyLinkedList{
-        head:  nil,
-        tail:  nil,
-        nodes: []*node{},
+        head: nil,
+        size: 0,
     }
 }
 
 
 func (this *MyLinkedList) Get(index int) int {
-    if index < 0 || index >= len(this.nodes) {
+    if index < 0 || index >= this.size {
         return -1
     }
-    return this.nodes[index].val
+    
+    curr := this.head
+    for index > 0 {
+        index--
+        curr = curr.next
+    }
+    return curr.val
 }
 
 
 func (this *MyLinkedList) AddAtHead(val int)  {
-    newNode := &node{
-        val: val,
-        prev: nil,
-        next: this.head,
-    }
-
-    if this.head != nil {
-        this.head.prev = newNode
-    } else {
-        this. tail = newNode
-    }
-    this.head = newNode
-    this.nodes = append([]*node{newNode}, this.nodes...)
+    this.AddAtIndex(0, val)
 }
 
 
 func (this *MyLinkedList) AddAtTail(val int)  {
-    newNode := &node{
-        val:  val,
-        prev: this.tail,
-        next: nil,
-    }
-
-    if this.tail != nil {
-        this.tail.next = newNode
-    } else {
-        this.head = newNode
-    }
-
-    this.tail = newNode
-    this.nodes = append(this.nodes, newNode)
+    this.AddAtIndex(this.size, val)
 }
 
 
 func (this *MyLinkedList) AddAtIndex(index int, val int)  {
-    n := len(this.nodes)
-    if index < 0 || index > n {
+    if index < 0 || index > this.size {
         return
     }
 
     newNode := &node{
-        val: val,
-        prev: nil,
+        val:  val,
         next: nil,
     }
-    
     if index == 0 {
-        this.AddAtHead(val)
-    } else if index == n {
-        this.AddAtTail(val)
+        newNode.next = this.head
+        this.head = newNode
     } else {
-        this.nodes[index].prev = newNode
-        newNode.next = this.nodes[index]
-        this.nodes[index - 1].next = newNode
-        newNode.prev = this.nodes[index - 1]
-        this.nodes = append(this.nodes[:index], append([]*node{newNode}, this.nodes[index:]...)...)
+        curr := this.head
+        for index > 1 {
+            index--
+            curr = curr.next
+        }
+
+        newNode.next = curr.next
+        curr.next = newNode
     }
+    this.size++
 }
 
 
 func (this *MyLinkedList) DeleteAtIndex(index int)  {
-    if index < 0 || index >= len(this.nodes) {
+    if index < 0 || index >= this.size {
         return
     }
-
     if index == 0 {
         this.head = this.head.next
-        if this.head != nil {
-            this.head.prev = nil
-        } else {
-            this.tail = nil
-        }
-        this.nodes = this.nodes[1:]
-    } else if index == len(this.nodes) - 1 {
-        this.tail = this.tail.prev
-        if this.tail != nil {
-            this.tail.next = nil
-        } else {
-            this.head = nil
-        }
-        this.nodes = this.nodes[:len(this.nodes)-1]
     } else {
-        this.nodes[index-1].next = this.nodes[index].next
-        this.nodes[index+1].prev = this.nodes[index].prev
-        this.nodes = append(this.nodes[:index], this.nodes[index+1:]...)
+        curr := this.head
+        for index > 1 {
+            index--
+            curr = curr.next
+        }
+
+        if curr.next != nil {
+            curr.next = curr.next.next
+        }
     }
+    this.size--
 }
