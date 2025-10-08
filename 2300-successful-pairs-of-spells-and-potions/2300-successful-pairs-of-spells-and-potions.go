@@ -1,5 +1,5 @@
 func successfulPairs(spells []int, potions []int, success int64) []int {
-    return binarySearch(spells, potions, success)
+    return replaceSpells(spells, potions, success)
 }
 
 func bruteForce(spells []int, potions []int, success int64) []int {
@@ -33,4 +33,22 @@ func binarySearch(spells []int, potions []int, success int64) []int {
         }
     }
     return results
+}
+
+func replaceSpells(spells []int, potions []int, success int64) []int {
+    slices.Sort(potions)
+    n := len(potions)
+    for i, spell := range spells {
+        minPotion := int(success / int64(spell))
+        if success % int64(spell) > 0 {
+            minPotion += 1
+        }
+        idx, _ := slices.BinarySearch(potions, minPotion)
+        if idx >= n {
+            spells[i] = 0
+        } else {
+            spells[i] = n-idx
+        }
+    }
+    return spells
 }
