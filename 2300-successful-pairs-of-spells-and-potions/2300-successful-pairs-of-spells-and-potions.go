@@ -21,16 +21,9 @@ func binarySearch(spells []int, potions []int, success int64) []int {
     n := len(potions)
     results := make([]int, len(spells))
     for i, spell := range spells {
-        minPotion := int(success / int64(spell))
-        if success % int64(spell) > 0 {
-            minPotion += 1
-        }
+        minPotion := int((success + int64(spell) - 1) / int64(spell))
         idx, _ := slices.BinarySearch(potions, minPotion)
-        if idx >= n {
-            results[i] = 0
-        } else {
-            results[i] = n-idx
-        }
+        results[i] = n-idx
     }
     return results
 }
