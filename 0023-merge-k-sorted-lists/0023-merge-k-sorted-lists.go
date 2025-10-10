@@ -1,10 +1,3 @@
-/**
- * Definition for singly-linked list.
- * type ListNode struct {
- *     Val int
- *     Next *ListNode
- * }
- */
 type minHeap []*ListNode
 
 func (h minHeap) Len() int                 { return len(h) }
