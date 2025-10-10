@@ -19,19 +19,18 @@ func (h *minHeap) Pop() any {
 func mergeKLists(lists []*ListNode) *ListNode {
     var head *ListNode = nil
     var tail *ListNode = nil
-    results := &minHeap{}
-    heap.Init(results)
+    results := make(minHeap, 0, len(lists))
+    heap.Init(&results)
     for _, node := range lists {
         if node != nil {
-            heap.Push(results, node)
+            heap.Push(&results, node)
         }
     }
 
     for results.Len() > 0 {
-        node := heap.Pop(results).(*ListNode)
+        node := heap.Pop(&results).(*ListNode)
         if node.Next != nil {
-            heap.Push(results, node.Next)
-            node.Next = nil
+            heap.Push(&results, node.Next)
         }
 
         if head == nil {
