@@ -4,7 +4,7 @@ func maximumEnergy(energy []int, k int) int {
         energy[i] += energy[i+k]
     }
 
-    max := -9999999
+    max := -99
     for i := n-1; i >= 0; i-- {
         if energy[i] > max {
             max = energy[i]
