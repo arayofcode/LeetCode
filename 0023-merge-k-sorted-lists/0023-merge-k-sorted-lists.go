@@ -20,7 +20,7 @@ func mergeKLists(lists []*ListNode) *ListNode {
     var head *ListNode = nil
     var tail *ListNode = nil
     results := make(minHeap, 0, len(lists))
-    heap.Init(&results)
+
     for _, node := range lists {
         if node != nil {
             heap.Push(&results, node)
