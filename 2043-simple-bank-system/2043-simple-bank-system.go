@@ -1,12 +1,10 @@
 type Bank struct {
-    total    int
     balances []int64
 }
 
 
 func Constructor(balance []int64) Bank {
     return Bank{
-        total: len(balance),
         balances: append([]int64{0}, balance...),
     }
 }
@@ -40,5 +38,5 @@ func (this *Bank) Withdraw(account int, money int64) bool {
 }
 
 func (this *Bank) validAccount(account int) bool {
-    return account >= 1 && account <= this.total
+    return account >= 1 && account <= len(this.balances)
 }
