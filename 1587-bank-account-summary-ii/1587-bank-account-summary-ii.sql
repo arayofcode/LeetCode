@@ -1,0 +1,2 @@
+-- Write your PostgreSQL query statement below
+SELECT DISTINCT Users.name name, SUM(Transactions.amount) AS balance FROM Users JOIN Transactions ON Users.account = transactions.account GROUP BY Users.name HAVING SUM(Transactions.amount) > 10000;
